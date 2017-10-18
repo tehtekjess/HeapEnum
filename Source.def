@@ -1,0 +1,6 @@
+LIBRARY cuck
+EXPORTS
+	DisplayHeapNodes @1
+	DisplayHeapBlocks @2
+	GetFirstHeapBlock @3
+	GetNextHeapBlock @4
