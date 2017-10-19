@@ -128,7 +128,8 @@ extern "C" __declspec(dllimport) NTSTATUS __stdcall RtlDestroyQueryDebugBuffer(I
 
 // Main Functions
 BOOL HEAP_DLL WINAPI DllMain(HANDLE, DWORD, LPVOID);
-int HEAP_DLL DisplayHeapNodes(void ** output, ULONG ** len, ULONG ProcessId);
-int HEAP_DLL DisplayHeapBlocks(void ** output, ULONG ** len, ULONG ProcessId, void * nodeAddress);
+int HEAP_DLL DisplayHeapNodes(byte ** output, ULONG ** len, ULONG ProcessId);
+int HEAP_DLL DisplayHeapBlocks(byte ** output, ULONG ** len, ULONG ProcessId, void * nodeAddress);
 bool HEAP_DLL GetFirstHeapBlock(PDEBUG_HEAP_INFORMATION64 curHeapNode, HeapBlock64 *hb);
 bool HEAP_DLL GetNextHeapBlock(PDEBUG_HEAP_INFORMATION64 curHeapNode, HeapBlock64 *hb);
+void HEAP_DLL FreeBlock(ULONG * where);
