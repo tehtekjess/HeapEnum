@@ -106,7 +106,7 @@ int DisplayHeapBlocks(byte ** output, ULONG ** len, ULONG pid, void * nodeAddres
 	return 0x0;
 }
 
-//Get the frist heap block in a node list
+//Get the first heap block in a node list
 bool GetFirstHeapBlock(PDEBUG_HEAP_INFORMATION64 curHeapNode, HeapBlock64 *hb) {
 	int *block;
 
@@ -120,9 +120,9 @@ bool GetFirstHeapBlock(PDEBUG_HEAP_INFORMATION64 curHeapNode, HeapBlock64 *hb) {
 	{
 		hb->reserved++;
 		//hb->dwAddress = (UINT64)(*(block + 6) + curHeapNode->Granularity);
-		UINT64 blockAddressLower = ((*(block + 6) >> 32) << 32) + curHeapNode->Granularity;
+		UINT32 blockAddressLower = ((*(block + 6) >> 32));
 		UINT64 blockAddressUpper = (*(block + 7) << 32);
-		hb->dwAddress = blockAddressLower + (blockAddressUpper << 32);
+		hb->dwAddress = blockAddressLower + (blockAddressUpper << 32) + curHeapNode->Granularity;
 		block = block + 8;
 		hb->dwSize = *block;
 	}
@@ -160,9 +160,9 @@ bool GetNextHeapBlock(PDEBUG_HEAP_INFORMATION64 curHeapNode, HeapBlock64 *hb) {
 		{
 			// new address = curBlockAddress + Granularity ;
 			//hb->dwAddress = (UINT64)(*(block + 6) + curHeapNode->Granularity);
-			UINT64 blockAddressLower = ((*(block + 6) >> 32) << 32) + curHeapNode->Granularity;
+			UINT32 blockAddressLower = ((*(block + 6) >> 32));
 			UINT64 blockAddressUpper = (*(block + 7) << 32);
-			hb->dwAddress = blockAddressLower + (blockAddressUpper << 32);
+			hb->dwAddress = blockAddressLower + (blockAddressUpper << 32) + curHeapNode->Granularity;
 
 			hb->reserved++;
 			block = block + 8; //move to next block
@@ -190,3 +190,8 @@ bool GetNextHeapBlock(PDEBUG_HEAP_INFORMATION64 curHeapNode, HeapBlock64 *hb) {
 	return TRUE;
 }
 
+// Other modules can call back to free the allocated blocks
+void FreeBlock(ULONG * where) {
+	free(where);
+	return;
+}
